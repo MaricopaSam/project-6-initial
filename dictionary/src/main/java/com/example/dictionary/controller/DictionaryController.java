@@ -42,8 +42,8 @@ public class DictionaryController {
         return entry;
     }
 
-    @GetMapping("/getWordsStargingWith/{value}")
-    public List<Entry> getWordsStargingWith(@PathVariable("value") String value) {
+    @GetMapping("/getWordsStartingWith/{value}")
+    public List<Entry> getWordsStartingWith(@PathVariable("value") String value) {
 
         StopWatch sw = new StopWatch();
         sw.start();
@@ -98,6 +98,27 @@ public class DictionaryController {
         String message = new StringBuilder().append("Retrieved entry for words containing")
                 .append(" consecutive double letters, ")
                 .append("containing ")
+                .append(entry.size())
+                .append(" entries in ")
+                .append(nanoSeconds / 1000000.0)
+                .append("ms")
+                .toString();
+
+        logger.info(message);
+        return entry;
+    }
+    @GetMapping("/getWordsEndingWith/{value}")
+    public List<Entry> getWordsEndingWith(@PathVariable("value") String value) {
+
+        StopWatch sw = new StopWatch();
+        sw.start();
+        List<Entry> entry =  this.dictionaryService.getWordsEndingWith(value);
+        sw.stop();
+
+        long nanoSeconds = sw.getLastTaskTimeNanos();
+        String message = new StringBuilder().append("Retrieved entry for words ending with [")
+                .append(value)
+                .append("] containing ")
                 .append(entry.size())
                 .append(" entries in ")
                 .append(nanoSeconds / 1000000.0)
